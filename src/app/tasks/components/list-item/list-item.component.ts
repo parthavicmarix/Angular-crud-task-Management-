@@ -52,7 +52,7 @@ export class ListItemComponent {
       if (res) {
         this._taskService.deleteTask(id).subscribe({
           next: (res) => {
-            this.updateTaskList.emit(true);
+            this.updateTaskList.emit(true); 
           },
           error: (err) => {
             this.onError.emit(err);
