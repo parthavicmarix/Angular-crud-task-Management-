@@ -1,6 +1,6 @@
-projectKey=Angular-crud
+projectKey=Angular-crud-task-management
 serverUrl=http://localhost:9000
 serverVersion=25.6.0.109173
-dashboardUrl=http://localhost:9000/dashboard?id=Angular-crud
-ceTaskId=b1b8df28-dd40-4118-8687-1fb54def8d5f
-ceTaskUrl=http://localhost:9000/api/ce/task?id=b1b8df28-dd40-4118-8687-1fb54def8d5f
+dashboardUrl=http://localhost:9000/dashboard?id=Angular-crud-task-management
+ceTaskId=e44f4311-5443-456d-b1ae-02b688537d39
+ceTaskUrl=http://localhost:9000/api/ce/task?id=e44f4311-5443-456d-b1ae-02b688537d39
