@@ -1,0 +1,24 @@
+<section class="add-edit-task">
+  <div class="form-wrapper">
+    <h2 class="form-title">{{ isEditMode ? 'Edit' : 'Add'}} Task:</h2>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="form-control-wrapper">
+        <input-control
+          [formGroup]="taskForm"
+          [fieldName]="'title'"
+          [fieldLabel]="'Title'"
+        ></input-control>
+        <textarea-control [formGroup]="taskForm" [fieldName]="'description'"
+          [fieldLabel]="'Description'"></textarea-control>
+        <datepicker-control [formGroup]="taskForm" [fieldName]="'dueDate'" [fieldLabel]="'Due date'" [minDate]="minDate"
+          [inputReadOnly]="true"></datepicker-control>
+        <task-status-dropdown [formGroup]="taskForm" [fieldName]="'status'"
+          [fieldLabel]="'Status'"></task-status-dropdown>
+        <div class="form-action">
+          <button mat-flat-button color="warn" type="button" [routerLink]="['/', AppPages.Tasks]">Cancel</button>
+          <button mat-flat-button color="primary" type="submit">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

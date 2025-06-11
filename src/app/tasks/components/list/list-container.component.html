@@ -1,0 +1,14 @@
+<section class="list-section">
+  <div class="task-container">
+    <div class="list-heading">
+      <h2 class="list-title">Task List:</h2>
+      <button mat-flat-button color="primary" [routerLink]="[AppPages.CreateTask]">Add Task</button>
+    </div>
+    <div cdkDropList class="task-list" (cdkDropListDropped)="drop($event)">
+      <ng-container *ngFor="let task of taskList;">
+        <task-list-item [task]="task" (updateTaskList)="updateTaskList($event)"
+          (onError)="onApiError($event)"></task-list-item>
+      </ng-container>
+    </div>
+  </div>
+</section>

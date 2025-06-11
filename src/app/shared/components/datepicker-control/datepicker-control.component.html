@@ -1,0 +1,10 @@
+<ng-container [formGroup]="formGroup">
+  <mat-form-field>
+    <mat-label>{{ fieldLabel }}</mat-label>
+    <input matInput [matDatepicker]="datePicker" [min]="minDate" [readonly]="inputReadOnly"
+      [formControlName]="fieldName">
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+    <mat-error *ngIf="formGroup.get(fieldName)?.errors?.['required']">{{ fieldLabel }} is required</mat-error>
+  </mat-form-field>
+</ng-container>
