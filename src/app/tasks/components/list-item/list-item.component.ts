@@ -23,9 +23,9 @@ export class ListItemComponent {
   user: UserModel;
 
   constructor(
-    private readonly _authService: AuthService,
-    private readonly _taskService: TaskService,
-    private readonly _dialogService: DialogServiceService
+    private  _authService: AuthService,
+    private  _taskService: TaskService,
+    private  _dialogService: DialogServiceService
   ) { }
 
   ngOnInit(): void {
@@ -63,7 +63,7 @@ export class ListItemComponent {
   }
 
   // Mark the task as completed
-  markAsComplete(task: TaskModel) {
+  markAsComplete(task: TaskModell) {
     if (task.status != TaskStatus.Completed) {
       task.status = TaskStatus.Completed;
       this._taskService.updateTask(task.id, task).subscribe({
