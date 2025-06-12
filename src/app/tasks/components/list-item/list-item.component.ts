@@ -63,7 +63,7 @@ export class ListItemComponent {
   }
 
   // Mark the task as completed
-  markAsComplete(task: TaskModell) {
+  markAsComplete(task: TaskModel) {
     if (task.status != TaskStatus.Completed) {
       task.status = TaskStatus.Completed;
       this._taskService.updateTask(task.id, task).subscribe({
