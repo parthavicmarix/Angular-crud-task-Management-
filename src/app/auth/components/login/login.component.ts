@@ -28,7 +28,7 @@ export class LoginComponent {
 
   // Method for authenticate the user
   login() {
-    
+
     if (this.loginForm.valid) {
       let body = {
         email: this.loginForm?.value.email ?? '',
@@ -51,11 +51,11 @@ export class LoginComponent {
   }
 
   // Method to display the error message
-  opneSnackbar(errMsg: any) {
-    this._snackBar.openFromComponent(CommonSnackbarComponent, {
-      duration: this.durationInSeconds * 1000,
-      data: errMsg,
-      panelClass: 'error-snackbar'
-    });
-  }
+  // opneSnackbar(errMsg: any) {
+  //   this._snackBar.openFromComponent(CommonSnackbarComponent, {
+  //     duration: this.durationInSeconds * 1000,
+  //     data: errMsg,
+  //     panelClass: 'error-snackbar'
+  //   });
+  // }
 }
