@@ -28,6 +28,7 @@ export class LoginComponent {
 
   // Method for authenticate the user
   login() {
+    
     if (this.loginForm.valid) {
       let body = {
         email: this.loginForm?.value.email ?? '',
