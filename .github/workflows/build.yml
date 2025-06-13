@@ -77,8 +77,3 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # - name: Fail if Quality Gate fails
-      #   if: steps.qualitygate.outputs.quality_gate_status != 'PASSED'
-      #   run: |
-      #     echo "❌ Merge blocked: Quality Gate failed in SonarQube!"
-      #     exit 1
