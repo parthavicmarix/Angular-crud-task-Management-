@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
   selector: 'app-common-snackbar',
   templateUrl: './common-snackbar.component.html',
   styleUrls: ['./common-snackbar.component.scss']
-})
+}) 
 export class CommonSnackbarComponent {
   constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { }
 
