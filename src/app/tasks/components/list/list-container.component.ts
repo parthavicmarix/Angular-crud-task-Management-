@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'task-list-container',
-  templateUrl: './list-container.component.html',
+  templateUrl: './list-container.component.html', 
   styleUrls: ['./list-container.component.scss']
 })
 export class ListContainerComponent implements OnInit {
