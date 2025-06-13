@@ -6,7 +6,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonSnackbarComponent } from 'src/app/shared/components/common-snackbar/common-snackbar.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy } from '@angular/core'; 
  
 @Component({
   selector: 'task-list-container',
@@ -25,7 +24,6 @@ export class ListContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTasks();
-    // Load tasks for list from task behaviour subject 
     this._taskService.tasks$.subscribe({
       next: (res) => {
         this.taskList = res;
@@ -36,7 +34,6 @@ export class ListContainerComponent implements OnInit {
     });
   }
 
-  // Get all tasks
   loadTasks() {
     this._taskService.getTasks().subscribe({
       next: (res) => { },
