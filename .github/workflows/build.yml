@@ -71,8 +71,14 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
 
-      - name: Fail if too many major issues
-        if: steps.sonar_check.outputs.major_issues > 1
+      - name: Check SonarQube Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@master
+        id: qualitygate
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Fail if Quality Gate fails
+        if: steps.qualitygate.outputs.quality_gate_status != 'PASSED'
         run: |
-          echo "❌ Merge blocked: More than 30 major issues found in SonarQube."
+          echo "❌ Merge blocked: Quality Gate failed in SonarQube!"
           exit 1
