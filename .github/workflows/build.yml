@@ -76,3 +76,28 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+
+      - name: Check if PR approved by specific user
+        uses: actions/github-script@v6
+        id: reviewer_check
+        with:
+         github-token: ${{ secrets.GITHUB_TOKEN }}
+         script: |
+          const requiredUser = 'TrushangKCMX';
+          const { data: reviews } = await github.pulls.listReviews({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          pull_number: context.payload.pull_request.number,
+          });
+ 
+          const approvedBy = reviews
+          .filter(r => r.state === 'APPROVED')
+          .map(r => r.user.login);
+ 
+          if (!approvedBy.includes(requiredUser)) {
+          core.setFailed(`❌ PR must be approved by @${requiredUser}. Approved by: ${approvedBy.join(', ')}`);
+          } else {
+           console.log(`✅ Approved by @${requiredUser}`);
+          }
+
+      
