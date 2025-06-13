@@ -35,7 +35,6 @@ export class ListContainerComponent implements OnInit {
     });
   }
 
-  // Get all tasks
   loadTasks() {
     this._taskService.getTasks().subscribe({
       next: (res) => { },
