@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
+  constructor() { }
 
   intercept(httpRequest: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let request = httpRequest;
