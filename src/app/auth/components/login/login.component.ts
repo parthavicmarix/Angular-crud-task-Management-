@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import AppPages from 'src/app/common/constants/AppPages';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonSnackbarComponent } from 'src/app/shared/components/common-snackbar/common-snackbar.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,9 @@ export class LoginComponent {
   showLoader = false;
 
   constructor(
-    private readonly _authService: AuthService,
-    private readonly _router: Router,
-    private readonly _snackBar: MatSnackBar
+    private  _authService: AuthService,
+    private  _router: Router,
+    private  _snackBar: MatSnackBar
   ) { }
 
   // Method for authenticate the user
@@ -58,4 +59,5 @@ export class LoginComponent {
       panelClass: 'error-snackbar'
     });
   }
+
 }
