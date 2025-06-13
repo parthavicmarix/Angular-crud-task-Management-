@@ -65,9 +65,6 @@ jobs:
       - name: Build Angular project
         run: npm run build
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
