@@ -25,7 +25,6 @@ export class ListContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTasks();
-    // Load tasks for list from task behaviour subject 
     this._taskService.tasks$.subscribe({
       next: (res) => {
         this.taskList = res;
