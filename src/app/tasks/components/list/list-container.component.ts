@@ -18,8 +18,8 @@ export class ListContainerComponent implements OnInit {
   durationInSeconds = 5;
 
   constructor(
-    private readonly _taskService: TaskService,
-    private readonly _snackBar: MatSnackBar
+    private  _taskService: TaskService,
+    private  _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
