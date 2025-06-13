@@ -22,11 +22,11 @@ export class AddEditComponent implements OnInit {
   durationInSeconds = 5;
 
   constructor(
-    private readonly _fb: FormBuilder,
-    private readonly _taskService: TaskService,
-    private readonly _router: Router,
-    private readonly _route: ActivatedRoute,
-    private readonly _snackBar: MatSnackBar
+    private  _fb: FormBuilder,
+    private  _taskService: TaskService,
+    private  _router: Router,
+    private  _route: ActivatedRoute,
+    private  _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
