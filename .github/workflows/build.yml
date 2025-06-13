@@ -69,3 +69,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+
+      - name: Fail if too many major issues
+        if: steps.sonar_check.outputs.major_issues > 1
+        run: |
+          echo "❌ Merge blocked: More than 30 major issues found in SonarQube."
+          exit 1
