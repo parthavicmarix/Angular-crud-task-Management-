@@ -53,11 +53,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  
       
       - uses: actions/setup-node@v3
         with:
-          node-version: 22.16.0  # Or match your local version
+          node-version: 22.16.0  
 
       - name: Install dependencies
         run: npm ci
@@ -71,8 +71,9 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
 
-      - name: Fail if too many major issues
-        if: steps.sonar_check.outputs.major_issues > 1
-        run: |
-          echo "❌ Merge blocked: More than 30 major issues found in SonarQube."
-          exit 1
+      - name: Check SonarQube Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@master
+        id: qualitygate
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
