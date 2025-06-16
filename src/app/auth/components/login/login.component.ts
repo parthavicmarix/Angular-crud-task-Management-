@@ -10,7 +10,7 @@ import { CommonSnackbarComponent } from 'src/app/shared/components/common-snackb
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
-})
+}) 
 export class LoginComponent {
   durationInSeconds = 5;
   // Login form declaration
