@@ -21,7 +21,7 @@ export class AuthService {
   ) {
     const isAuthenticated = !!this.getUser();
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(isAuthenticated);
-    this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+    this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable(); 
   }
 
   // Check if user authenticated or not
