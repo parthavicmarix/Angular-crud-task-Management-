@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectionStrategy, Injectable } from '@angular/core';
 import { LoginModel } from '../models/LoginModel';
 import { UserModel } from '../models/UserModel';
 import { DataService } from 'src/app/core/data.service';
@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   // isAuthenticated behaviour subject
-  private isAuthenticatedSubject: BehaviorSubject<boolean>;
+  private readonly isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
 
   constructor(
-    private _dataService: DataService,
-    private readonly _router: Router
+    private readonly _dataService: DataService,
+    private readonly _router: Router,
   ) {
     const isAuthenticated = !!this.getUser();
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(isAuthenticated);
