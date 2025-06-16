@@ -4,8 +4,8 @@ on:
   pull_request:
     branches:
       - '**'  # Trigger on all PRs targeting any branch
-  pull_request:
-    types: [opened, synchronize, reopened]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   approval:
