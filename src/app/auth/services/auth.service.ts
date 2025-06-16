@@ -12,11 +12,11 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   // isAuthenticated behaviour subject
-  private readonly isAuthenticatedSubject: BehaviorSubject<boolean>;
+  private isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
 
   constructor(
-    private readonly _dataService: DataService,
+    private _dataService: DataService,
     private readonly _router: Router
   ) {
     const isAuthenticated = !!this.getUser();
