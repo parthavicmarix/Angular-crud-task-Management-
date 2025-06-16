@@ -10,4 +10,4 @@ export class CommonSnackbarComponent {
   constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { }
 
 }
- 
+  
