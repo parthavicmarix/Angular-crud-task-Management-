@@ -7,7 +7,7 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
   styleUrls: ['./common-snackbar.component.scss']
 }) 
 export class CommonSnackbarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { }
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { } 
 
 }
   
