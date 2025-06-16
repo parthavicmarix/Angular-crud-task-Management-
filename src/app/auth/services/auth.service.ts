@@ -17,7 +17,7 @@ export class AuthService {
 
   constructor(
     private readonly _dataService: DataService,
-    private readonly _router: Router
+    private readonly _router: Router,
   ) {
     const isAuthenticated = !!this.getUser();
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(isAuthenticated);
