@@ -1,9 +1,11 @@
 name: Reviewer Approval Check
 
 on:
-  pull_request:
+  push:
     branches:
-      - '**'  # Trigger on all PRs targeting any branch
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
   pull_request_review:
     types: [submitted]
 
