@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - '**'  # Trigger on all PRs targeting any branch
+  pull_request_review:
+    types:
+      - submitted   # Trigger when someone submits a review (approve, comment, or request changes)
+
 
 jobs:
   approval:
