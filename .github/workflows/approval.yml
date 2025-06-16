@@ -8,7 +8,6 @@ on:
     types:
       - submitted   # Trigger when someone submits a review (approve, comment, or request changes)
 
-
 jobs:
   approval:
     name: Reviewer
