@@ -6,7 +6,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonSnackbarComponent } from 'src/app/shared/components/common-snackbar/common-snackbar.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy } from '@angular/core'; 
 @Component({
   selector: 'task-list-container',
   templateUrl: './list-container.component.html', 

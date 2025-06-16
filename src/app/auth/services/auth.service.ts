@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LoginModel } from '../models/LoginModel';
 import { UserModel } from '../models/UserModel';
 import { DataService } from 'src/app/core/data.service';
