@@ -35,7 +35,7 @@
 
 
 
-name: Build
+name: SonarQube Report
 
 on:
   push:
@@ -43,8 +43,6 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
-
-
 
 jobs:
   build:
@@ -76,3 +74,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+
+      
+
+      

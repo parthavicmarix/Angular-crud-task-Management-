@@ -13,15 +13,15 @@ import { Router } from '@angular/router';
 export class AuthService {
   // isAuthenticated behaviour subject
   private readonly isAuthenticatedSubject: BehaviorSubject<boolean>;
-  isAuthenticated$: Observable<boolean>;
+  public isAuthenticated$: Observable<boolean>;
 
   constructor(
     private readonly _dataService: DataService,
-    private readonly _router: Router
+    private readonly _router: Router,
   ) {
     const isAuthenticated = !!this.getUser();
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(isAuthenticated);
-    this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+    this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable(); 
   }
 
   // Check if user authenticated or not
