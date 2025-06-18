@@ -1,9 +1,6 @@
 name: PR Check with SonarQube and Reviewer
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
@@ -53,20 +50,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branch = context.ref.replace('refs/heads/', '');
-            const pulls = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              head: `${context.repo.owner}:${branch}`,
-            });
-
-            if (pulls.data.length === 0) {
-              core.setFailed('❌ No PR found for this branch.');
-              return;
-            }
-
-            const prNumber = pulls.data[0].number;
+            const prNumber = context.payload.pull_request.number;
             const reviewers = process.env.REVIEWER_NAME.split(',').map(r => r.trim());
 
             const { data: reviews } = await github.rest.pulls.listReviews({
