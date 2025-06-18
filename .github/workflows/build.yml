@@ -53,7 +53,20 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prNumber = context.payload.pull_request.number;
+            const branch = context.ref.replace('refs/heads/', '');
+            const pulls = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: `${context.repo.owner}:${branch}`,
+            });
+
+            if (pulls.data.length === 0) {
+              core.setFailed('❌ No PR found for this branch.');
+              return;
+            }
+
+            const prNumber = pulls.data[0].number;
             const reviewers = process.env.REVIEWER_NAME.split(',').map(r => r.trim());
 
             const { data: reviews } = await github.rest.pulls.listReviews({
