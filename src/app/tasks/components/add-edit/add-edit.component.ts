@@ -6,6 +6,8 @@ import { TaskModel } from '../../models/TaskModel';
 import AppPages from 'src/app/common/constants/AppPages';
 import { CommonSnackbarComponent } from 'src/app/shared/components/common-snackbar/common-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChangeDetectionStrategy } from '@angular/core';
+
 
 @Component({
   selector: 'app-add-edit',
