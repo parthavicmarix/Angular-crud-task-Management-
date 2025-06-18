@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import AppPages from 'src/app/common/constants/AppPages';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonSnackbarComponent } from 'src/app/shared/components/common-snackbar/common-snackbar.component';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
