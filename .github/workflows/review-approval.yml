@@ -43,7 +43,7 @@
 #             }
         
  
-name: Reviewer Approval Check
+name: Reviewer
 
 on:
   workflow_run:
