@@ -47,20 +47,18 @@
 name: Reviewer Approval Check
 
 on:
-  workflow_run:
-    workflows: ["SonarQube Report"]
-    types:
-      - completed
   pull_request:
     branches:
       - '**'
+    types: [opened, synchronize, reopened, ready_for_review, review_requested, edited]
+
   pull_request_review:
     types: [submitted]
 
 jobs:
   approval:
     name: Reviewer
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'pull_request' || github.event_name == 'pull_request_review' }}
+    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_review'
     runs-on: ubuntu-latest
 
     steps:
