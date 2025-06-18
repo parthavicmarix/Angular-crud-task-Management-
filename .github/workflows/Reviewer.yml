@@ -46,46 +46,15 @@
 name: Reviewer
 
 on:
-  workflow_run:
-    workflows: ["SonarQube Report"]
-    types:
-      - completed
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   reviewer-approval:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Reviewer Approval
     runs-on: ubuntu-latest
-    name: Check PR Reviewer
 
     steps:
-      - name: Get PR Info from Branch
-        uses: actions/github-script@v6
-        id: get-pr
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const run = await github.rest.actions.getWorkflowRun({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: context.payload.workflow_run.id,
-            });
-
-            const branch = run.data.head_branch;
-            const pulls = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              head: `${context.repo.owner}:${branch}`,
-            });
-
-            if (pulls.data.length === 0) {
-              core.setFailed('No matching PR found for this branch');
-              return;
-            }
-
-            const pr = pulls.data[0];
-            core.setOutput('pr_number', pr.number);
-
       - name: Check Reviewer Approval
         uses: actions/github-script@v6
         env:
@@ -93,7 +62,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prNumber = core.getInput('pr_number');
+            const prNumber = context.payload.pull_request.number;
             const reviewers = process.env.REVIEWER_NAME.split(',').map(r => r.trim());
 
             const { data: reviews } = await github.rest.pulls.listReviews({
@@ -113,4 +82,3 @@ jobs:
             } else {
               console.log(`✅ Approved by: ${approvedBy.join(', ')}`);
             }
-
