@@ -47,15 +47,20 @@
 name: Reviewer Approval Check
 
 on:
+  workflow_run:
+    workflows: ["SonarQube Report"]
+    types:
+      - completed
   pull_request:
     branches:
-      - '**'  # Trigger on all PRs targeting any branch
+      - '**'
   pull_request_review:
     types: [submitted]
 
 jobs:
   approval:
     name: Reviewer
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'pull_request' || github.event_name == 'pull_request_review' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -65,7 +70,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const prNumber = context.payload.pull_request.number;
+            const prNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
+
+            if (!prNumber) {
+              console.log("🔍 No PR number found, possibly not a PR event.");
+              return;
+            }
 
             const { data: pr } = await github.rest.pulls.get({
               owner,
@@ -88,13 +98,18 @@ jobs:
 
       - name: Check SonarQube status
         id: sonar-status
-        continue-on-error: true  # Avoid blocking later steps
+        continue-on-error: true
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const prNumber = context.payload.pull_request.number;
+            const prNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
+
+            if (!prNumber) {
+              console.log("⚠️ Not a PR event. Skipping SonarQube check.");
+              return;
+            }
 
             const { data: pr } = await github.rest.pulls.get({
               owner,
@@ -110,7 +125,7 @@ jobs:
               ref: headSha
             });
 
-            const sonarCheck = checks.check_runs.find(c => c.name.includes("SonarQube"));
+            const sonarCheck = checks.check_runs.find(c => c.name.includes("SonarQube Report"));
 
             if (!sonarCheck) {
               core.setFailed("❌ SonarQube check not found.");
@@ -118,28 +133,31 @@ jobs:
             }
 
             if (sonarCheck.conclusion !== "success") {
-              core.setFailed(`❌ SonarQube check has not passed (status: ${sonarCheck.conclusion}). Skipping approval check.`);
+              core.setFailed(`❌ SonarQube check failed or incomplete. Status: ${sonarCheck.conclusion}`);
               return;
             }
 
-            console.log("✅ SonarQube passed. Proceeding with reviewer approval check.");
-
-      - name: Debug Message
-        run: echo "✅ Workflow triggered correctly"
+            console.log("✅ SonarQube passed. Proceeding with reviewer check.");
 
       - name: Check if PR is approved by TL or Sr Developer
-        if: steps.sonar-status.conclusion == 'success'
         env:
-          REVIEWER_NAME: ${{ secrets.REVIEWER_NAME }}  # e.g., RajCamrix,TrushangKCMX
+          REVIEWER_NAME: ${{ secrets.REVIEWER_NAME }}  # Example: RajCamrix,TrushangKCMX
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const requiredUsers = process.env.REVIEWER_NAME.split(',').map(s => s.trim());
+            const prNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
+
+            if (!prNumber) {
+              console.log("⚠️ No PR context. Skipping approval check.");
+              return;
+            }
+
             const { data: reviews } = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
+              pull_number: prNumber,
             });
 
             const approvedBy = reviews
@@ -151,5 +169,5 @@ jobs:
             if (!isApproved) {
               core.setFailed(`❌ PR must be approved by one of: ${requiredUsers.join(', ')}. Approved by: ${approvedBy.join(', ') || 'no one'}`);
             } else {
-              console.log(`✅ Approved by at least one required user: ${approvedBy.join(', ')}`);
+              console.log(`✅ Approved by at least one required user.`);
             }
