@@ -88,7 +88,7 @@ jobs:
 
       - name: Check SonarQube status
         id: sonar-status
-        continue-on-error: true  # Prevent early failure
+        continue-on-error: true  # Avoid blocking later steps
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -101,3 +101,55 @@ jobs:
               repo,
               pull_number: prNumber
             });
+
+            const headSha = pr.head.sha;
+
+            const { data: checks } = await github.rest.checks.listForRef({
+              owner,
+              repo,
+              ref: headSha
+            });
+
+            const sonarCheck = checks.check_runs.find(c => c.name.includes("SonarQube"));
+
+            if (!sonarCheck) {
+              core.setFailed("❌ SonarQube check not found.");
+              return;
+            }
+
+            if (sonarCheck.conclusion !== "success") {
+              core.setFailed(`❌ SonarQube check has not passed (status: ${sonarCheck.conclusion}). Skipping approval check.`);
+              return;
+            }
+
+            console.log("✅ SonarQube passed. Proceeding with reviewer approval check.");
+
+      - name: Debug Message
+        run: echo "✅ Workflow triggered correctly"
+
+      - name: Check if PR is approved by TL or Sr Developer
+        if: steps.sonar-status.conclusion == 'success'
+        env:
+          REVIEWER_NAME: ${{ secrets.REVIEWER_NAME }}  # e.g., RajCamrix,TrushangKCMX
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const requiredUsers = process.env.REVIEWER_NAME.split(',').map(s => s.trim());
+            const { data: reviews } = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const approvedBy = reviews
+              .filter(r => r.state === 'APPROVED')
+              .map(r => r.user.login);
+
+            const isApproved = requiredUsers.some(user => approvedBy.includes(user));
+
+            if (!isApproved) {
+              core.setFailed(`❌ PR must be approved by one of: ${requiredUsers.join(', ')}. Approved by: ${approvedBy.join(', ') || 'no one'}`);
+            } else {
+              console.log(`✅ Approved by at least one required user: ${approvedBy.join(', ')}`);
+            }
