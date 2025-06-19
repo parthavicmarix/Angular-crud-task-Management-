@@ -1,6 +1,9 @@
 name: PR Check with SonarQube and Reviewer
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
@@ -43,30 +46,28 @@ jobs:
     if: ${{ needs.build-and-sonarqube.result == 'success' }}
 
     steps:
-      - name: Check Reviewer Approval
-        uses: actions/github-script@v6
+      - name: Check if PR is approved by TL or Sr Developer
         env:
-          REVIEWER_NAME: ${{ secrets.REVIEWER_NAME }}
+          REVIEWER_NAME: ${{ secrets.REVIEWER_NAME }}  # e.g., RajCamrix,TrushangKCMX
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prNumber = context.payload.pull_request.number;
-            const reviewers = process.env.REVIEWER_NAME.split(',').map(r => r.trim());
-
+            const requiredUsers = process.env.REVIEWER_NAME.split(',').map(s => s.trim());
             const { data: reviews } = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: prNumber,
+              pull_number: context.payload.pull_request.number,
             });
 
             const approvedBy = reviews
               .filter(r => r.state === 'APPROVED')
               .map(r => r.user.login);
 
-            const isApproved = reviewers.some(user => approvedBy.includes(user));
+            const isApproved = requiredUsers.some(user => approvedBy.includes(user));
 
             if (!isApproved) {
-              core.setFailed(`❌ PR must be approved by: ${reviewers.join(', ')}. Approved by: ${approvedBy.join(', ') || 'no one'}`);
+              core.setFailed(`❌ PR must be approved by one of: ${requiredUsers.join(', ')}. Approved by: ${approvedBy.join(', ') || 'no one'}`);
             } else {
-              console.log(`✅ Approved by: ${approvedBy.join(', ')}`);
+              console.log(`✅ Approved by at least one required user.`);
             }
