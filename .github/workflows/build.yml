@@ -54,10 +54,34 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const requiredUsers = process.env.REVIEWER_NAME.split(',').map(s => s.trim());
+
+            let prNumber;
+
+            if (context.payload.pull_request) {
+              // If the workflow is triggered by a pull_request event
+              prNumber = context.payload.pull_request.number;
+            } else {
+              // If it's a push to main (like after merge), get PR from commit SHA
+              const commitSha = context.sha;
+
+              const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: commitSha,
+              });
+
+              if (prs.data.length === 0) {
+                core.setFailed("❌ No PR found associated with this commit.");
+                return;
+              }
+
+              prNumber = prs.data[0].number;
+            }
+
             const { data: reviews } = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
+              pull_number: prNumber,
             });
 
             const approvedBy = reviews
