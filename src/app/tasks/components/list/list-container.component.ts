@@ -9,8 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'task-list-container',
-  templateUrl: './list-container.component.html', 
-  styleUrls: ['./list-container.component.scss']
+  templateUrl: './list-container.component.html',  
+  styleUrls: ['./list-container.component.scss'] 
 })
 export class ListContainerComponent implements OnInit {
   AppPages = AppPages;
