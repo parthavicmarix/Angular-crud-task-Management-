@@ -21,7 +21,7 @@ export class AddEditComponent implements OnInit {
   minDate = new Date();
   AppPages = AppPages;
   durationInSeconds = 5;
-
+   
   constructor(
     private  _fb: FormBuilder,
     private  _taskService: TaskService,
@@ -36,7 +36,7 @@ export class AddEditComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       dueDate: ['', Validators.required],
-      status: ['', Validators.required]
+      status: ['', Validators.required] 
     });
 
     // Get all tasks
